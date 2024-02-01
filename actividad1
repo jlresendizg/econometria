@@ -1,0 +1,246 @@
+# Resolución del Ejercicio 1
+
+# En un dado no cargado, la probabilidad de obtener un resultado específico es 1/6,
+# ya que hay 6 posibles resultados (1, 2, 3, 4, 5, 6).
+
+# Probabilidad de obtener 4, 5 o 6 en el primer lanzamiento
+prob_4_5_6 = 3 / 6  # Hay tres resultados favorables (4, 5, 6) de un total de 6.
+
+# Probabilidad de obtener 1, 2, 3 o 4 en el segundo lanzamiento
+prob_1_2_3_4 = 4 / 6  # Hay cuatro resultados favorables (1, 2, 3, 4) de un total de 6.
+
+# La probabilidad total es el producto de las probabilidades individuales,
+# ya que los lanzamientos son eventos independientes.
+prob_total = prob_4_5_6 * prob_1_2_3_4
+prob_total
+
+##################################################################################################################################
+# Resolución del Ejercicio 2
+
+# En un par de dados no cargados, cada dado tiene 6 caras, por lo que hay un total de 6 x 6 = 36 resultados posibles.
+# La suma de los puntos de los dados puede variar desde 2 (1+1) hasta 12 (6+6).
+
+# Inicializamos un diccionario para contar la frecuencia de cada suma posible.
+suma_frecuencia = {suma: 0 for suma in range(2, 13)}
+
+# Calculamos la frecuencia de cada suma posible.
+for dado1 in range(1, 7):
+    for dado2 in range(1, 7):
+        suma_frecuencia[dado1 + dado2] += 1
+
+# Convertimos las frecuencias en probabilidades dividiendo por el número total de resultados (36).
+distribucion_probabilidad = {suma: frecuencia / 36 for suma, frecuencia in suma_frecuencia.items()}
+
+distribucion_probabilidad
+
+##################################################################################################################################
+# Resolución del Ejercicio 3
+
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Usaremos la distribución de probabilidad del ejercicio 2 para encontrar y graficar la función de distribución F(x).
+# La distribución de probabilidad del ejercicio 2 es:
+probabilidad_x = {
+    2: 0.027777777777777776,
+    3: 0.05555555555555555,
+    4: 0.08333333333333333,
+    5: 0.1111111111111111,
+    6: 0.1388888888888889,
+    7: 0.16666666666666666,
+    8: 0.1388888888888889,
+    9: 0.1111111111111111,
+    10: 0.08333333333333333,
+    11: 0.05555555555555555,
+    12: 0.027777777777777776
+}
+
+# Calculamos la función de distribución acumulativa F(x)
+valores_x = sorted(probabilidad_x.keys())
+funcion_distribucion_Fx = {}
+suma_acumulada = 0
+
+for x in valores_x:
+    suma_acumulada += probabilidad_x[x]
+    funcion_distribucion_Fx[x] = suma_acumulada
+
+# Graficamos la función de distribución
+plt.step(valores_x, [funcion_distribucion_Fx[x] for x in valores_x], where="post")
+plt.xlabel('Suma de puntos (X)')
+plt.ylabel('F(X)')
+plt.title('Función de Distribución F(X)')
+plt.grid(True)
+plt.show()
+
+funcion_distribucion_Fx
+
+
+##################################################################################################################################
+# Resolución del Ejercicio 4
+
+from sympy import integrate, oo
+
+# Calculamos la probabilidad de que X > 2
+# Para ello, integramos la función de densidad desde 2 hasta infinito
+prob_X_mayor_2 = integrate(f_x, (x, 2, oo))
+
+# Calculamos la probabilidad de que -3 < X <= 4
+# Dado que la función de densidad es 0 para x < 0, solo necesitamos integrar desde 0 hasta 4
+prob_X_entre_0_y_4 = integrate(f_x, (x, 0, 4))
+
+prob_X_mayor_2, prob_X_entre_0_y_4
+
+
+##################################################################################################################################
+# Resolución del Ejercicio 5
+
+# En este ejercicio, se deben calcular el precio justo de un boleto de lotería.
+# Se informa que hay 200 premios de $5, 20 premios de $25 y 5 premios de $100.
+# También se menciona que se van a vender 10,000 boletos.
+
+# Cantidad de premios y su valor
+premios = {
+    5: 200,    # 200 premios de $5
+    25: 20,    # 20 premios de $25
+    100: 5     # 5 premios de $100
+}
+
+# Total de boletos
+total_boletos = 10000
+
+# Valor esperado del premio por boleto
+valor_esperado = sum(premio * cantidad for premio, cantidad in premios.items()) / total_boletos
+valor_esperado
+
+
+##################################################################################################################################
+# Resolución del Ejercicio 6
+
+# Para calcular la esperanza de la suma de los puntos al lanzar un par de dados no cargados,
+# utilizamos la distribución de probabilidad del ejercicio 2.
+
+# La distribución de probabilidad (suma y probabilidad) es la siguiente:
+distribucion_probabilidad_ej2 = {
+    2: 0.027777777777777776,
+    3: 0.05555555555555555,
+    4: 0.08333333333333333,
+    5: 0.1111111111111111,
+    6: 0.1388888888888889,
+    7: 0.16666666666666666,
+    8: 0.1388888888888889,
+    9: 0.1111111111111111,
+    10: 0.08333333333333333,
+    11: 0.05555555555555555,
+    12: 0.027777777777777776
+}
+
+# Calculamos la esperanza (valor esperado) de la suma de los puntos
+esperanza = sum(suma * probabilidad for suma, probabilidad in distribucion_probabilidad_ej2.items())
+esperanza
+
+
+##################################################################################################################################
+# Resolución del Ejercicio 7
+
+# Usaremos la distribución de probabilidad del ejercicio 2 para calcular la varianza y la desviación estándar.
+
+# La esperanza (media) ya fue calculada en el ejercicio 6 y es aproximadamente 7.
+media = esperanza
+
+# Calculamos la varianza
+varianza = sum(((suma - media) ** 2) * probabilidad for suma, probabilidad in distribucion_probabilidad_ej2.items())
+
+# La desviación estándar es la raíz cuadrada de la varianza
+desviacion_estandar = varianza ** 0.5
+
+varianza, desviacion_estandar
+
+
+
+##################################################################################################################################
+# Resolución del Ejercicio 8
+from scipy.stats import norm
+
+# Áreas bajo la curva normal estándar para los intervalos dados
+# Utilizaremos la función de distribución acumulativa (CDF) de la distribución normal estándar
+
+# a) Entre z = 0 y z = 1.2
+area_0_a_1_2 = norm.cdf(1.2) - norm.cdf(0)
+
+# b) Entre z = -0.68 y z = cero
+area_menos_0_68_a_0 = norm.cdf(0) - norm.cdf(-0.68)
+
+# c) Entre z = -0.46 y z = 2.21
+area_menos_0_46_a_2_21 = norm.cdf(2.21) - norm.cdf(-0.46)
+
+# d) Entre z = 0.81 y z = 1.94
+area_0_81_a_1_94 = norm.cdf(1.94) - norm.cdf(0.81)
+
+# e) A la derecha de z = 1.28
+area_derecha_1_28 = 1 - norm.cdf(1.28)
+
+area_0_a_1_2, area_menos_0_68_a_0, area_menos_0_46_a_2_21, area_0_81_a_1_94, area_derecha_1_28
+
+##################################################################################################################################
+# Resolución del Ejercicio 9
+
+# Datos del ejercicio:
+# Peso medio de los estudiantes: 151 lb
+# Desviación estándar: 15 lb
+# Se asume una distribución normal
+
+# Peso medio y desviación estándar
+peso_medio = 151
+desviacion_estandar = 15
+
+# Total de estudiantes
+total_estudiantes = 500
+
+# a) Estudiantes que pesan entre 120 y 155 libras
+# Convertimos los pesos a z-scores
+z_120 = (120 - peso_medio) / desviacion_estandar
+z_155 = (155 - peso_medio) / desviacion_estandar
+
+# Calculamos las áreas bajo la curva normal para estos z-scores
+area_120_155 = norm.cdf(z_155) - norm.cdf(z_120)
+
+# Calculamos el número de estudiantes en este rango
+estudiantes_120_155 = area_120_155 * total_estudiantes
+
+# b) Estudiantes que pesan más de 185 libras
+z_185 = (185 - peso_medio) / desviacion_estandar
+
+# Área bajo la curva a la derecha de z_185
+area_mas_185 = 1 - norm.cdf(z_185)
+
+# Número de estudiantes que pesan más de 185 libras
+estudiantes_mas_185 = area_mas_185 * total_estudiantes
+
+estudiantes_120_155, estudiantes_mas_185
+
+##################################################################################################################################
+# Resolución del Ejercicio 10
+# Distribución t de Student con 9 grados de libertad
+
+# Grados de libertad
+grados_libertad = 9
+
+# a) Área sombreada a la derecha = 0.05
+t1_a = t.ppf(1 - 0.05, grados_libertad)
+
+# b) Toda el área sombreada = 0.05
+# Para el área total sombreada, consideramos dos colas, por lo que el área en una cola será 0.025
+t1_b = t.ppf(1 - 0.025, grados_libertad)
+
+# c) Toda el área no sombreada = 0.99
+# El área no sombreada en el medio es 0.99, por lo tanto, el área sombreada total es 0.01, dividida en dos colas
+t1_c = t.ppf(1 - 0.005, grados_libertad)
+
+# d) Área sombreada a la izquierda = 0.01
+t1_d = t.ppf(0.01, grados_libertad)
+
+# e) Área a la izquierda de t1 = 0.90
+t1_e = t.ppf(0.90, grados_libertad)
+
+t1_a, t1_b, t1_c, t1_d, t1_e
+
