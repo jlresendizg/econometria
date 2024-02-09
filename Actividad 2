@@ -1,0 +1,230 @@
+###########################################################################################
+#EJERCICIO 1
+
+import numpy as np
+
+# Datos de las medidas del diámetro de la esfera
+diametros = np.array([6.33, 6.37, 6.36, 6.32, 6.37])
+# Cálculo de la media
+media = np.mean(diametros)
+# Cálculo de la varianza (insesgada, usando ddof=1 para dividir por N-1 en lugar de N)
+varianza = np.var(diametros, ddof=1)
+media, varianza
+
+###########################################################################################
+#EJERCICIO 2
+
+# Datos proporcionados
+media_muestra = 0.824
+desviacion_estandar_muestra = 0.042
+tamaño_muestra = 200
+z_95 = 1.96  # Valor z para 95% de confianza
+z_99 = 2.576  # Valor z para 99% de confianza
+
+# Cálculo de los límites de confianza para el 95%
+limite_inferior_95 = media_muestra - z_95 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+limite_superior_95 = media_muestra + z_95 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+
+# Cálculo de los límites de confianza para el 99%
+limite_inferior_99 = media_muestra - z_99 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+limite_superior_99 = media_muestra + z_99 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+
+limite_inferior_95, limite_superior_95, limite_inferior_99, limite_superior_99
+
+###########################################################################################
+#EJERCICIO 3
+
+# Valores z aproximados para cada nivel de confianza
+z_98 = 2.33
+z_90 = 1.645
+z_9973 = 3  # Aproximadamente 3 desviaciones estándar para 99.73%
+
+# Cálculo de los límites de confianza para el 98%
+limite_inferior_98 = media_muestra - z_98 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+limite_superior_98 = media_muestra + z_98 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+
+# Cálculo de los límites de confianza para el 90%
+limite_inferior_90 = media_muestra - z_90 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+limite_superior_90 = media_muestra + z_90 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+
+# Cálculo de los límites de confianza para el 99.73%
+limite_inferior_9973 = media_muestra - z_9973 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+limite_superior_9973 = media_muestra + z_9973 * (desviacion_estandar_muestra / np.sqrt(tamaño_muestra))
+
+limite_inferior_98, limite_superior_98, limite_inferior_90, limite_superior_90, limite_inferior_9973, limite_superior_9973
+
+###########################################################################################
+#EJERCICIO 4
+
+# Datos proporcionados
+desviacion_estandar = 0.05
+error_deseado = 0.01
+
+# Cálculo del tamaño de la muestra para 95% de confianza
+n_95 = (z_95 * desviacion_estandar / error_deseado) ** 2
+
+# Cálculo del tamaño de la muestra para 99% de confianza
+n_99 = (z_99 * desviacion_estandar / error_deseado) ** 2
+
+n_95, n_99
+
+###########################################################################################
+#EJERCICIO 5
+
+# Datos proporcionados para el ejercicio 5
+media_muestra_calificaciones = 75
+desviacion_estandar_calificaciones = 10
+tamaño_muestra_calificaciones = 50
+
+# Cálculo de los límites de confianza del 95% para la media
+limite_inferior_95_calificaciones = media_muestra_calificaciones - z_95 * (desviacion_estandar_calificaciones / np.sqrt(tamaño_muestra_calificaciones))
+limite_superior_95_calificaciones = media_muestra_calificaciones + z_95 * (desviacion_estandar_calificaciones / np.sqrt(tamaño_muestra_calificaciones))
+
+from scipy.stats import norm
+
+# Calcular el área bajo la curva para el valor z correspondiente, lo cual nos da el nivel de confianza
+area_bajo_curva = norm.cdf(z_correspondiente) - norm.cdf(-z_correspondiente)
+
+# Convertir el área bajo la curva a porcentaje para representar el grado de confianza
+grado_confianza = area_bajo_curva * 100
+grado_confianza
+
+###########################################################################################
+#EJERCICIO 6
+
+from scipy.stats import t
+
+# Grados de libertad especificados
+grados_libertad = [9, 20, 30, 60]
+
+# Nivel de confianza del 95% para dos colas implica un nivel de significancia de 5% distribuido en dos colas, por lo que usamos 2.5% en cada cola
+alfa = 0.025
+
+# Calcular los valores críticos para cada grado de libertad
+valores_criticos = {v: t.ppf(1 - alfa, v) for v in grados_libertad}
+valores_criticos
+
+###########################################################################################
+#EJERCICIO 7
+
+# Datos proporcionados para el ejercicio 7
+media_muestra_esfera = 4.38
+desviacion_estandar_esfera = 0.06
+tamaño_muestra_esfera = 10
+grados_libertad_esfera = tamaño_muestra_esfera - 1
+
+# Valores t críticos para 95% y 99% de confianza
+t_95 = t.ppf(1 - alfa, grados_libertad_esfera)  # Usando el mismo alfa que para 95% (dos colas)
+t_99 = t.ppf(1 - 0.005, grados_libertad_esfera)  # Ajustando alfa para 99% (dos colas)
+
+# Cálculo de los límites de confianza para el 95%
+limite_inferior_95_esfera = media_muestra_esfera - t_95 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+limite_superior_95_esfera = media_muestra_esfera + t_95 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+
+# Cálculo de los límites de confianza para el 99%
+limite_inferior_99_esfera = media_muestra_esfera - t_99 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+limite_superior_99_esfera = media_muestra_esfera + t_99 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+
+limite_inferior_95_esfera, limite_superior_95_esfera, limite_inferior_99_esfera, limite_superior_99_esfera
+
+###########################################################################################
+#EJERCICIO 8
+
+# Cálculo de los límites de confianza usando la distribución z (teoría de muestras grandes) para el 95% y 99%
+
+# Límites de confianza para el 95% usando z
+limite_inferior_95_esfera_z = media_muestra_esfera - z_95 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+limite_superior_95_esfera_z = media_muestra_esfera + z_95 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+
+# Límites de confianza para el 99% usando z
+limite_inferior_99_esfera_z = media_muestra_esfera - z_99 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+limite_superior_99_esfera_z = media_muestra_esfera + z_99 * (desviacion_estandar_esfera / np.sqrt(tamaño_muestra_esfera))
+
+limite_inferior_95_esfera_z, limite_superior_95_esfera_z, limite_inferior_99_esfera_z, limite_superior_99_esfera_z
+
+
+###########################################################################################
+#EJERCICIO 9
+
+from scipy.stats import chi2
+
+# Datos proporcionados
+n_focos = 200
+s_focos = 100
+grados_libertad_focos = n_focos - 1
+
+# Valores críticos chi-cuadrado para 95% y 99% de confianza
+chi2_95_inf = chi2.ppf(0.025, grados_libertad_focos)  # Límite inferior para 95%
+chi2_95_sup = chi2.ppf(0.975, grados_libertad_focos)  # Límite superior para 95%
+chi2_99_inf = chi2.ppf(0.005, grados_libertad_focos)  # Límite inferior para 99%
+chi2_99_sup = chi2.ppf(0.995, grados_libertad_focos)  # Límite superior para 99%
+
+# Cálculo de los límites de confianza para la desviación estándar
+limite_inferior_95_s = np.sqrt((grados_libertad_focos * s_focos**2) / chi2_95_sup)
+limite_superior_95_s = np.sqrt((grados_libertad_focos * s_focos**2) / chi2_95_inf)
+limite_inferior_99_s = np.sqrt((grados_libertad_focos * s_focos**2) / chi2_99_sup)
+limite_superior_99_s = np.sqrt((grados_libertad_focos * s_focos**2) / chi2_99_inf)
+
+###########################################################################################
+#EJERCICIO 10
+
+import numpy as np
+from scipy.stats import chi2
+
+def calcular_tamaño_muestra(desviacion_estandar, porcentaje_precision, confianza):
+    # Inicializar variables
+    n = 1  # Empezar con un tamaño de muestra pequeño
+    precision_inferior = 1 - porcentaje_precision
+    precision_superior = 1 + porcentaje_precision
+    alfa = 1 - confianza
+
+    # Iterar hasta encontrar un tamaño de muestra adecuado
+    while True:
+        grados_libertad = n - 1
+        chi2_inferior = chi2.ppf(alfa / 2, grados_libertad)
+        chi2_superior = chi2.ppf(1 - alfa / 2, grados_libertad)
+
+        limite_inferior = np.sqrt((grados_libertad * desviacion_estandar**2) / chi2_superior)
+        limite_superior = np.sqrt((grados_libertad * desviacion_estandar**2) / chi2_inferior)
+
+        # Verificar si los límites están dentro de la precisión deseada
+        if limite_inferior >= desviacion_estandar * precision_inferior and limite_superior <= desviacion_estandar * precision_superior:
+            return n
+
+        n += 1
+
+# Desviación estándar estimada de la muestra
+desviacion_estandar = 100  # Ejemplo de ejercicio anterior
+
+# Calcular el tamaño de la muestra necesario para una precisión del ±5% y ±10%
+tamaño_muestra_5_por_ciento = calcular_tamaño_muestra(desviacion_estandar, 0.05, 0.9973)
+tamaño_muestra_10_por_ciento = calcular_tamaño_muestra(desviacion_estandar, 0.10, 0.9973)
+
+print("Tamaño de muestra necesario para ±5% de precisión:", tamaño_muestra_5_por_ciento)
+print("Tamaño de muestra necesario para ±10% de precisión:", tamaño_muestra_10_por_ciento)
+
+###########################################################################################
+#EJERCICIO 11
+
+# Datos proporcionados para el ejercicio 11
+s_estudiantes = 2.40
+n_estudiantes = 16
+grados_libertad_estudiantes = n_estudiantes - 1
+
+# Valores críticos chi-cuadrado para 95% y 99% de confianza
+chi2_95_inf_estudiantes = chi2.ppf(0.025, grados_libertad_estudiantes)
+chi2_95_sup_estudiantes = chi2.ppf(0.975, grados_libertad_estudiantes)
+chi2_99_inf_estudiantes = chi2.ppf(0.005, grados_libertad_estudiantes)
+chi2_99_sup_estudiantes = chi2.ppf(0.995, grados_libertad_estudiantes)
+
+# Cálculo de los límites de confianza para la desviación estándar
+limite_inferior_95_s_estudiantes = np.sqrt((grados_libertad_estudiantes * s_estudiantes**2) / chi2_95_sup_estudiantes)
+limite_superior_95_s_estudiantes = np.sqrt((grados_libertad_estudiantes * s_estudiantes**2) / chi2_95_inf_estudiantes)
+limite_inferior_99_s_estudiantes = np.sqrt((grados_libertad_estudiantes * s_estudiantes**2) / chi2_99_sup_estudiantes)
+limite_superior_99_s_estudiantes = np.sqrt((grados_libertad_estudiantes * s_estudiantes**2) / chi2_99_inf_estudiantes)
+
+limite_inferior_95_s_estudiantes, limite_superior_95_s_estudiantes, limite_inferior_99_s_estudiantes, limite_superior_99_s_estudiantes
+
+###########################################################################################
+#EJERCICIO 12
+
