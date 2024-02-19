@@ -1,3 +1,6 @@
+##################################################################################################################################
+# Resolución del Ejercicio 1
+
 from scipy.stats import binom
 
 # Parámetros del problema
@@ -7,3 +10,250 @@ p = 0.5  # probabilidad de cara en un lanzamiento
 # Calculamos la probabilidad acumulada de obtener de 40 a 60 caras, inclusive
 probabilidad = binom.cdf(60, n, p) - binom.cdf(39, n, p)
 probabilidad
+
+##################################################################################################################################
+# Resolución del Ejercicio 2
+
+from scipy.stats import binom
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Parámetros de la distribución
+n = 100  # Número de lanzamientos
+p = 0.5  # Probabilidad de éxito (cara)
+
+# a) Probabilidad de rechazar la hipótesis cuando es correcta (Error Tipo I)
+probabilidad_aceptacion = binom.cdf(60, n, p) - binom.cdf(39, n, p)
+probabilidad_rechazo = 1 - probabilidad_aceptacion
+
+# b) Generar gráfica
+k = np.arange(0, 101)  # Rango de número de éxitos (caras) posible
+probabilidades = binom.pmf(k, n, p)
+
+plt.figure(figsize=(14, 8))
+plt.bar(k, probabilidades, color='lightblue')
+
+plt.fill_between(k, probabilidades, where=(k >= 40) & (k <= 60), color='green', alpha=0.5, label='Región de aceptación (40-60 caras)')
+
+plt.title('Distribución Binomial de 100 Lanzamientos de una Moneda')
+plt.xlabel('Número de Caras')
+plt.ylabel('Probabilidad')
+plt.xticks(np.arange(0, 101, 10))
+plt.legend()
+plt.grid(axis='y')
+plt.tight_layout()
+
+# Mostrar resultados y gráfica
+print(f"Probabilidad de rechazar la hipótesis cuando es correcta (Error Tipo I): {probabilidad_rechazo*100:.2f}%")
+plt.show()
+
+##################################################################################################################################
+# Resolución del Ejercicio 3
+
+from scipy.stats import binom
+
+# Parámetros del experimento
+n_cartas = 50  # Total de cartas
+k_aciertos = 32  # Número de aciertos
+p_acierto = 0.5  # Probabilidad de acertar bajo la hipótesis nula
+
+# Calculamos el valor P como la probabilidad de acertar 32 o más veces
+valor_p = 1 - binom.cdf(k_aciertos - 1, n_cartas, p_acierto)
+
+# Evaluar significancia
+significancia_005 = valor_p < 0.05
+significancia_001 = valor_p < 0.01
+
+valor_p, significancia_005, significancia_001
+
+##################################################################################################################################
+# Resolución del Ejercicio 4
+
+from scipy.stats import binom_test
+
+# Datos del problema
+n_personas = 200  # tamaño de la muestra
+exitos_observados = 160  # número de personas a las que la medicina proporcionó alivio
+p_0 = 0.9  # eficacia afirmada por el fabricante
+
+# Realizamos el test de proporciones (binomial)
+valor_p = binom_test(exitos_observados, n_personas, p_0, alternative='two-sided')
+
+# Determinar si la afirmación es legítima (rechazamos H0 si el valor P < 0.01)
+es_legitima = valor_p < 0.01
+
+valor_p, es_legitima
+
+##################################################################################################################################
+# Resolución del Ejercicio 5
+
+from scipy.stats import norm
+
+# Parámetros dados
+media_muestra = 1570  # Media de la muestra
+media_hipotesis = 1600  # Media bajo la hipótesis nula
+desviacion_estandar = 120  # Desviación estándar de la población
+n = 100  # Tamaño de la muestra
+
+# Cálculo de la estadística de prueba Z
+Z = (media_muestra - media_hipotesis) / (desviacion_estandar / np.sqrt(n))
+
+# Cálculo del valor P (dos colas, ya que la hipótesis alternativa es μ ≠ 1600 horas)
+valor_p = 2 * norm.cdf(Z)  # Usamos la función de distribución acumulada
+
+# Interpretación para los niveles de significancia 0.05 y 0.01
+rechazo_005 = valor_p < 0.05
+rechazo_001 = valor_p < 0.01
+
+Z, valor_p, rechazo_005, rechazo_001
+
+##################################################################################################################################
+# Resolución del Ejercicio 6
+
+from scipy.stats import norm
+import numpy as np
+
+# Parámetros dados
+media_muestra = 1570  # Media de la muestra
+media_hipotesis = 1600  # Media bajo la hipótesis nula
+desviacion_estandar = 120  # Desviación estándar de la población
+n = 100  # Tamaño de la muestra
+
+# Cálculo de la estadística de prueba Z para una cola
+Z_una_cola = (media_muestra - media_hipotesis) / (desviacion_estandar / np.sqrt(n))
+
+# Cálculo del valor P para una prueba de una cola
+valor_p_una_cola = norm.cdf(Z_una_cola)
+
+# Interpretación para los niveles de significancia 0.05 y 0.01
+rechazo_005_una_cola = valor_p_una_cola < 0.05
+rechazo_001_una_cola = valor_p_una_cola < 0.01
+
+Z_una_cola, valor_p_una_cola, rechazo_005_una_cola, rechazo_001_una_cola
+
+##################################################################################################################################
+# Resolución del Ejercicio 7
+
+# Datos del problema
+media_muestra_cables = 1850  # Media de la muestra de cables
+media_poblacional_cables = 1800  # Media poblacional bajo H0
+desviacion_estandar_cables = 100  # Desviación estándar de la población
+n_cables = 50  # Tamaño de la muestra
+
+# Cálculo de la estadística de prueba Z
+Z_cables = (media_muestra_cables - media_poblacional_cables) / (desviacion_estandar_cables / np.sqrt(n_cables))
+
+# Cálculo del valor P para una prueba de una cola (derecha)
+valor_p_cables = 1 - norm.cdf(Z_cables)
+
+Z_cables, valor_p_cables
+
+##################################################################################################################################
+# Resolución del Ejercicio 8
+
+from scipy.stats import ttest_ind
+
+# Datos del problema
+n1, media1, std1 = 40, 74, 8  # Grupo 1: tamaño, media y desviación estándar
+n2, media2, std2 = 50, 78, 7  # Grupo 2: tamaño, media y desviación estándar
+
+# Simulación de las calificaciones para ambos grupos asumiendo distribución normal
+np.random.seed(0)  # Para reproducibilidad
+calificaciones_grupo1 = np.random.normal(media1, std1, n1)
+calificaciones_grupo2 = np.random.normal(media2, std2, n2)
+
+# Realización de la prueba t para muestras independientes
+t_stat, valor_p = ttest_ind(calificaciones_grupo1, calificaciones_grupo2, equal_var=False)  # equal_var=False para Welch's t-test
+
+t_stat, valor_p
+
+##################################################################################################################################
+# Resolución del Ejercicio 9
+
+# Datos del problema para el ejercicio 9
+n_atletas, media_atletas, std_atletas = 50, 68.2, 2.5  # Grupo de atletas
+n_no_atletas, media_no_atletas, std_no_atletas = 50, 67.5, 2.8  # Grupo de no atletas
+
+# Simulación de las estaturas para ambos grupos asumiendo distribución normal
+estaturas_atletas = np.random.normal(media_atletas, std_atletas, n_atletas)
+estaturas_no_atletas = np.random.normal(media_no_atletas, std_no_atletas, n_no_atletas)
+
+# Realización de la prueba t para muestras independientes (prueba de una cola)
+t_stat_9, valor_p_9 = ttest_ind(estaturas_atletas, estaturas_no_atletas, equal_var=False, alternative='greater')
+
+t_stat_9, valor_p_9
+
+##################################################################################################################################
+# Resolución del Ejercicio 10
+
+from scipy.stats import norm, t
+from math import sqrt
+
+# Datos del problema
+diferencia_observada = 0.7  # Diferencia en las medias de las estaturas
+std1 = 2.5  # Desviación estándar del primer grupo
+std2 = 2.8  # Desviación estándar del segundo grupo
+alpha1 = 0.05  # Nivel de significancia para el primer cálculo
+alpha2 = 0.01  # Nivel de significancia para el segundo cálculo
+power = 0.8  # Poder estadístico deseado
+
+# Z-scores para los niveles de significancia y poder
+z_alpha1 = norm.ppf(1 - alpha1 / 2)  # Dos colas
+z_alpha2 = norm.ppf(1 - alpha2 / 2)  # Dos colas
+z_power = norm.ppf(power)
+
+# Cálculo del tamaño de muestra necesario para cada nivel de significancia
+n1 = ((z_alpha1 + z_power) ** 2 * (std1 ** 2 + std2 ** 2)) / diferencia_observada ** 2
+n2 = ((z_alpha2 + z_power) ** 2 * (std1 ** 2 + std2 ** 2)) / diferencia_observada ** 2
+
+n1, n2
+
+##################################################################################################################################
+# Resolución del Ejercicio 11
+
+# Corrección de la definición de variables y cálculo
+recuperados_a, recuperados_b = 75, 65  # Recuperados en cada grupo
+n_grupo_a, n_grupo_b = 100, 100  # Tamaño de cada grupo
+
+# Cálculo de proporciones y estadística de prueba Z
+p1 = recuperados_a / n_grupo_a
+p2 = recuperados_b / n_grupo_b
+p_pool = (recuperados_a + recuperados_b) / (n_grupo_a + n_grupo_b)
+z_stat_manual = (p1 - p2) / sqrt(p_pool * (1 - p_pool) * (1/n_grupo_a + 1/n_grupo_b))
+valor_p_manual = 1 - norm.cdf(z_stat_manual)
+
+z_stat_manual, valor_p_manual
+
+
+##################################################################################################################################
+# Resolución del Ejercicio 12
+
+# Corrección del cálculo manual para el ejercicio 12, dado el error con proportions_ztest
+# Re-definición de las variables y cálculo correcto
+p1_12 = recuperados_a_12 / n_grupo_a_12
+p2_12 = recuperados_b_12 / n_grupo_b_12
+p_pool_12 = (recuperados_a_12 + recuperados_b_12) / (n_grupo_a_12 + n_grupo_b_12)
+
+z_stat_12_manual = (p1_12 - p2_12) / sqrt(p_pool_12 * (1 - p_pool_12) * (1/n_grupo_a_12 + 1/n_grupo_b_12))
+valor_p_12_manual = 1 - norm.cdf(z_stat_12_manual)
+
+z_stat_12_manual, valor_p_12_manual
+
+##################################################################################################################################
+# Resolución del Ejercicio 13
+
+# Datos del ejercicio 13
+n_a, p_a = 300, 0.56  # Distrito A: tamaño de muestra y proporción a favor
+n_b, p_b = 200, 0.48  # Distrito B: tamaño de muestra y proporción a favor
+
+# Cálculo de proporciones y estadística de prueba Z para diferencia entre dos proporciones
+p_pool_13 = (p_a * n_a + p_b * n_b) / (n_a + n_b)
+z_stat_13 = (p_a - p_b) / sqrt(p_pool_13 * (1 - p_pool_13) * (1/n_a + 1/n_b))
+valor_p_13 = 2 * (1 - norm.cdf(abs(z_stat_13)))  # Test de dos colas para la diferencia
+
+# Para probar específicamente que se prefiere al candidato en el distrito A (una cola)
+valor_p_13_una_cola = 1 - norm.cdf(z_stat_13)
+
+z_stat_13, valor_p_13, valor_p_13_una_cola
+
+
