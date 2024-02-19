@@ -1,0 +1,9 @@
+from scipy.stats import binom
+
+# Parámetros del problema
+n = 100  # número de lanzamientos
+p = 0.5  # probabilidad de cara en un lanzamiento
+
+# Calculamos la probabilidad acumulada de obtener de 40 a 60 caras, inclusive
+probabilidad = binom.cdf(60, n, p) - binom.cdf(39, n, p)
+probabilidad
